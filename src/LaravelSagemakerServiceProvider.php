@@ -2,24 +2,38 @@
 
 namespace ThePLAN\LaravelSagemaker;
 
+use Aws\SageMakerRuntime\SageMakerRuntimeClient;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ThePLAN\LaravelSagemaker\Commands\LaravelSagemakerCommand;
 
 class LaravelSagemakerServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
+         * Package Configuration
          */
         $package
             ->name('laravel-sagemaker')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel-sagemaker_table')
-            ->hasCommand(LaravelSagemakerCommand::class);
+            ->hasConfigFile();
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->app->singleton(LaravelSagemaker::class, function (Application $app) {
+            $config = [
+                'region' => config('sagemaker.region'),
+                'version' => config('sagemaker.version'),
+            ];
+
+            return new LaravelSagemaker(
+                new SageMakerRuntimeClient($config)
+            );
+        });
     }
 }
