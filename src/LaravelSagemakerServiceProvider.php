@@ -2,8 +2,10 @@
 
 namespace ThePLAN\LaravelSagemaker;
 
-use Aws\SageMakerRuntime\SageMakerRuntimeClient;
+use Illuminate\Support\Arr;
+use Illuminate\Foundation\Application;
 use Spatie\LaravelPackageTools\Package;
+use Aws\SageMakerRuntime\SageMakerRuntimeClient;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class LaravelSagemakerServiceProvider extends PackageServiceProvider
@@ -30,6 +32,12 @@ class LaravelSagemakerServiceProvider extends PackageServiceProvider
                 'region' => config('sagemaker.region'),
                 'version' => config('sagemaker.version'),
             ];
+
+            $credentials = config('sagemaker.credentials');
+
+            if (! empty($credentials['key']) && ! empty($credentials['secret'])) {
+                $config['credentials'] = Arr::only($credentials, ['key', 'secret', 'token']);
+            }
 
             return new LaravelSagemaker(
                 new SageMakerRuntimeClient($config)

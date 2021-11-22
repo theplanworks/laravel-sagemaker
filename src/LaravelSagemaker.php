@@ -10,7 +10,7 @@ class LaravelSagemaker
     /**
      * Initialize the Sagemaker Client
      *
-     * @param Aws\SageMakerRuntime\SageMakerRuntimeClient $client
+     * @param \Aws\SageMakerRuntime\SageMakerRuntimeClient $client
      *
      * @return void
      */
