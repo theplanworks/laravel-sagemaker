@@ -2,10 +2,10 @@
 
 namespace ThePLAN\LaravelSagemaker;
 
-use Illuminate\Support\Arr;
-use Illuminate\Foundation\Application;
-use Spatie\LaravelPackageTools\Package;
 use Aws\SageMakerRuntime\SageMakerRuntimeClient;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Arr;
+use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class LaravelSagemakerServiceProvider extends PackageServiceProvider
