@@ -26,7 +26,7 @@ class LaravelSagemaker
 
         $params = [
             'Body' => $body,
-            'EndpointName' => $endpoint
+            'EndpointName' => $endpoint,
         ];
 
         return $async ?
