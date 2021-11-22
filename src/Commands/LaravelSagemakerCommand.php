@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace ThePLAN\LaravelSagemaker\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelSagemakerCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-sagemaker';
 
     public $description = 'My command';
 
