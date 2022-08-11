@@ -33,8 +33,13 @@ return [
 ## Usage
 
 ```php
-$laravel_sagemaker = new ThePLAN\LaravelSagemaker();
-echo $laravel_sagemaker->echoPhrase('Hello, ThePLAN!');
+$result = LaravelSagemaker::forEndpoint('my-endpoint-name')
+                          ->body($body)
+                          ->async()
+                          ->contentType('application/json')
+                          ->invoke();
+
+echo $result->get('predictions');
 ```
 
 ## Testing

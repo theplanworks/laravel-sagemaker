@@ -8,10 +8,29 @@ use ThePLAN\LaravelSagemaker\Exceptions\LaravelSagemakerException;
 class LaravelSagemaker
 {
     /**
+     * Inference Endpoint Name
+     */
+    protected $endpoint;
+
+    /**
+     * Body
+     */
+    protected $body;
+
+    /**
+     * Asyncronous Request
+     */
+    protected $isAsync = false;
+
+    /**
+     * Content Type for request
+     */
+    protected $contentType = 'application/json';
+
+    /**
      * Initialize the Sagemaker Client
      *
-     * @param \Aws\SageMakerRuntime\SageMakerRuntimeClient $client
-     *
+     * @param  \Aws\SageMakerRuntime\SageMakerRuntimeClient  $client
      * @return void
      */
     public function __construct(private SageMakerRuntimeClient $client)
@@ -19,17 +38,73 @@ class LaravelSagemaker
         //
     }
 
-    public function invokeEndpoint(string $body, string $endpoint, bool $async = false)
+    /**
+     * Start a SageMaker session
+     *
+     * @param  string  $endpoint
+     * @return \ThePLAN\LaravelSagemaker\LaravelSagemaker
+     */
+    public function forEndpoint(string $endpoint): LaravelSagemaker
     {
-        throw_unless($body, new LaravelSagemakerException('Invocation Body is Required'));
-        throw_unless($endpoint, new LaravelSagemakerException('Invocation Endpoint is Required'));
+        $this->endpoint = $endpoint;
+
+        return $this;
+    }
+
+    /**
+     * Add Message Body
+     *
+     * @return \ThePLAN\LaravelSagemaker\LaravelSagemaker
+     */
+    public function body(mixed $body): LaravelSagemaker
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * Set Asyncronous
+     *
+     * @return \ThePLAN\LaravelSagemaker\LaravelSagemaker
+     */
+    public function async(): LaravelSagemaker
+    {
+        $this->async = true;
+
+        return $this;
+    }
+
+    /**
+     * Set Content Type
+     *
+     * @param  string  $contentType
+     * @return \ThePLAN\LaravelSagemaker\LaravelSagemaker
+     */
+    public function contentType(string $contentType): LaravelSagemaker
+    {
+        $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * Invoke a Sagemaker Endpoint
+     *
+     * @return \Aws\Result|\Guzzlehttp\Promise\Promise
+     */
+    public function invoke()
+    {
+        throw_unless($this->body, new LaravelSagemakerException('Invocation Body is Required'));
+        throw_unless($this->endpoint, new LaravelSagemakerException('Invocation Endpoint is Required'));
 
         $params = [
-            'Body' => $body,
-            'EndpointName' => $endpoint,
+            'Body' => $this->body,
+            'ContentType' => $this->contentType,
+            'EndpointName' => $this->endpoint,
         ];
 
-        return $async ?
+        return $this->isAsync ?
             $this->client->invokeEndpointAsync($params) :
             $this->client->invokeEndpoint($params);
     }
