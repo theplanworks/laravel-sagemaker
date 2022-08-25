@@ -70,7 +70,7 @@ class LaravelSagemaker
      */
     public function async(): LaravelSagemaker
     {
-        $this->async = true;
+        $this->isAsync = true;
 
         return $this;
     }
