@@ -33,7 +33,7 @@ return [
 ## Usage
 
 ```php
-$result = LaravelSagemaker::forEndpoint('my-endpoint-name')
+$result = LaravelSagemaker::make()->forEndpoint('my-endpoint-name')
                           ->body($body)
                           ->async()
                           ->contentType('application/json')

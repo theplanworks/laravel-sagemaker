@@ -27,6 +27,24 @@ class LaravelSagemaker
      */
     protected $contentType = 'application/json';
 
+    public static function make(string $keyID = null, string $secret = null)
+    {
+        $config = [
+            'region' => config('sagemaker.region'),
+            'version' => config('sagemaker.version'),
+        ];
+
+        $credentials = !empty($keyID) && !empty($secret)
+            ? ['key' => $keyID, 'secret' => $secret]
+            : config('sagemaker.credentials');
+
+        if (! empty($credentials['key']) && ! empty($credentials['secret'])) {
+            $config['credentials'] = Arr::only($credentials, ['key', 'secret', 'token']);
+        }
+
+        return new static(new SageMakerRuntimeClient($config));
+    }
+
     /**
      * Initialize the Sagemaker Client
      *
