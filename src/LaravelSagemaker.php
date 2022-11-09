@@ -34,7 +34,7 @@ class LaravelSagemaker
             'version' => config('sagemaker.version'),
         ];
 
-        $credentials = !empty($keyID) && !empty($secret)
+        $credentials = ! empty($keyID) && ! empty($secret)
             ? ['key' => $keyID, 'secret' => $secret]
             : config('sagemaker.credentials');
 
