@@ -2,8 +2,8 @@
 
 namespace ThePLAN\LaravelSagemaker;
 
-use Illuminate\Support\Arr;
 use Aws\SageMakerRuntime\SageMakerRuntimeClient;
+use Illuminate\Support\Arr;
 use ThePLAN\LaravelSagemaker\Exceptions\LaravelSagemakerException;
 
 class LaravelSagemaker
