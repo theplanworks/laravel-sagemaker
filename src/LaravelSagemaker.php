@@ -118,7 +118,7 @@ class LaravelSagemaker
      * @param  string  $targetContainer
      * @return \ThePLAN\LaravelSagemaker\LaravelSagemaker
      */
-    public function targetContainer(string $targetContainer): LaravelSagemaker
+    public function targetContainer(string|null $targetContainer): LaravelSagemaker
     {
         $this->targetContainer = $targetContainer;
 
