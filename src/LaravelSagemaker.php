@@ -28,6 +28,11 @@ class LaravelSagemaker
      */
     protected $contentType = 'application/json';
 
+    /**
+     * Target Container for request
+     */
+    protected $targetContainer = null;
+
     public static function make(string $keyID = null, string $secret = null)
     {
         $config = [
@@ -108,6 +113,19 @@ class LaravelSagemaker
     }
 
     /**
+     * Set Target Container
+     *
+     * @param  string  $targetContainer
+     * @return \ThePLAN\LaravelSagemaker\LaravelSagemaker
+     */
+    public function targetContainer(string $targetContainer): LaravelSagemaker
+    {
+        $this->targetContainer = $targetContainer;
+
+        return $this;
+    }
+
+    /**
      * Invoke a Sagemaker Endpoint
      *
      * @return \Aws\Result|\Guzzlehttp\Promise\Promise
@@ -122,6 +140,11 @@ class LaravelSagemaker
             'ContentType' => $this->contentType,
             'EndpointName' => $this->endpoint,
         ];
+
+        if ($this->targetContainer) {
+            $params['TargetContainerHostname'] = $this->targetContainer;
+        }
+
 
         return $this->isAsync ?
             $this->client->invokeEndpointAsync($params) :
